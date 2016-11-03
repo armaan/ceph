@@ -113,27 +113,33 @@ static int do_show_info(librados::IoCtx &io_ctx, librbd::Image& image,
 
   if (snapname) {
     r = image.snap_is_protected(snapname, &snap_protected);
-    if (r < 0)
-      return r;
+    if (r < 0) {
+      std::cerr << "XXXMG: image.snap_is_protected returned " << r << std::endl;
+      //return r;
+    }
   }
 
   if (features & RBD_FEATURE_JOURNALING) {
     r = image.mirror_image_get_info(&mirror_image, sizeof(mirror_image));
     if (r < 0) {
-      return r;
+      std::cerr << "XXXMG: image.mirror_image_get_info returned " << r << std::endl;
+      //return r;
     }
   }
 
   r = image.snap_get_limit(&snap_limit);
-  if (r < 0)
-    return r;
+  if (r < 0) {
+    std::cerr << "XXXMG: image.snap_get_limit returned " << r << std::endl;
+    //return r;
+  }
 
   std::string prefix = image.get_block_name_prefix();
 
   librbd::group_spec_t group_spec;
   r = image.get_group(&group_spec);
   if (r < 0) {
-    return r;
+    std::cerr << "XXXMG: image.get_group returned " << r << std::endl;
+    //return r;
   }
 
   std::string group_string = "";
